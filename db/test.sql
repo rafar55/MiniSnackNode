@@ -1,0 +1,19 @@
+CREATE DATABASE IF NOT EXISTS nodeapirest;
+
+USE nodeapirest;
+
+
+CREATE TABLE IF NOT EXISTS  `Users` (
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`username` VARCHAR(50) NOT NULL,
+`email` VARCHAR(100) NOT NULL,
+`password` VARCHAR(200) NOT NULL,
+`created_at` TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+`updated_at` TIMESTAMP  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+   UNIQUE INDEX `email_unique_key` (`email`)
+) COMMENT='Table  with the users account data'
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB;
+
+
