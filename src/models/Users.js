@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: { msg: 'Invalid email address.' },
       },
     },
+  }, {
+    paranoid: true,
   });
   return Users;
 };

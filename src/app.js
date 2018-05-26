@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const logger = require('./logger');
 const Sequelize = require('sequelize');
+const compression = require('compression');
 
 const userRoutes = require('./routes/userRoutes');
 
@@ -14,6 +15,7 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 
 // middleware
+app.use(compression());
 app.use(express.static(path.join(process.cwd(), 'pubic')));
 app.use(bodyParser.json());
 app.use(morgan('combined'));

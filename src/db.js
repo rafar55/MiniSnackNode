@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const config = require('./config');
 const logger = require('./logger');
 const UserModel = require('./models/Users');
+const ProductModel = require('./models/Products');
+const ProductImagesModel = require('./models/ProdutcsImages');
 
 const sequelize = new Sequelize(config.MySQL.database, config.MySQL.user, config.MySQL.password, {
   host: config.MySQL.host,
@@ -15,6 +17,11 @@ sequelize.authenticate()
 
 // Model Configuration
 const Users = sequelize.import('Users', UserModel);
+const Products = sequelize.import('Products', ProductModel);
+const ProductsImages = sequelize.import('ProductsImages', ProductImagesModel);
+
+// Mapppings Relations Asociations
+Products.hasMany(ProductsImages, { as: 'Images', onDelete: 'CASCADE' });
 
 
 // sequelize syncronization
@@ -39,6 +46,7 @@ const to = function to(promise) {
 module.exports = {
   dbContext: {
     Users,
+    Products,
   },
   processDatabaseData,
   awaitHelper: to,
