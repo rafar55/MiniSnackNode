@@ -1,5 +1,5 @@
 const userService = require('../Services/UserService');
-const logger = require('../logger');
+
 
 const GetUserList = async (req, res, next) => {
   try {

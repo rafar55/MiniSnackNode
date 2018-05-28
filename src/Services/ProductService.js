@@ -4,17 +4,20 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const GetProducts = (query = '', ordeby = 'name') => db.dbContext.Products.findAll({
-  where: {
-    Name: {
-      [Op.like]: `%${query}%`,
+const GetProducts = (query = '', orderbystr = 'name asc') => {
+  const orderByArr = orderbystr.split(' ');
+  return db.dbContext.Products.findAll({
+    where: {
+      Name: {
+        [Op.like]: `%${query}%`,
+      },
     },
-  },
-  order: [
-    [ordeby, 'ASC'],
-  ],
-  include: [{ model: db.dbContext.ProductsImages, as: 'Images' }],
-});
+    order: [
+      orderByArr,
+    ],
+    include: [{ model: db.dbContext.ProductsImages, as: 'Images' }],
+  });
+};
 
 
 const GetProductById = idProducto => db.dbContext.Products.findOne({

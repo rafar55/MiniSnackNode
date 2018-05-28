@@ -32,9 +32,11 @@ app.use('/products', productsRoutes);
 app.use((err, req, res, next) => {
   logger.log('error', err);
   if (err instanceof Sequelize.ValidationError) {
-    const errors = err.errors.map(x => ({ message: x.message, property: x.path }));
+    let errors = err.errors.map(x => ({ message: x.message, property: x.path }));
+    errors = errors || 'bad request';
     res.status(400).send(errors);
   } else {
+    logger.log('error', e);
     res.status(500).send('Internal Server Error');
   }
 });

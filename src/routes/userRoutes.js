@@ -5,7 +5,7 @@ const userController = require('../controllers/UsersController');
 router.route('/')
   .get((req, res, next) => {
     logger.log('info', '/Users Request');
-    userController.GetUserList(req, res);
+    userController.GetUserList(req, res, next);
   })
   .post((req, res, next) => {
     userController.AddUsuario(req, res, next);

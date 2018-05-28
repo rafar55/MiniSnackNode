@@ -1,13 +1,34 @@
 const productService = require('../Services/ProductService');
 const logger = require('../logger');
+const Sequelize = require('sequelize');
+
+// Este metodo me sirve para  validad y parsial el sort  query a un valor que entienda el servicio
+function ParseOrderByString(orderbystr) {
+  if (!orderbystr) return 'name asc';
+
+  const strError = 'Invalid order by. Possible values name (default), -name, likes, -likes';
+  switch (orderbystr.toLowerCase()) {
+    case 'name':
+      return 'name asc';
+    case '-name':
+      return 'name desc';
+    case 'likes':
+      return 'likes asc';
+    case '-likes':
+      return 'likes desc';
+    default:
+      throw new Sequelize.ValidationError(strError, [new Sequelize.ValidationErrorItem(strError, 'string', 'orderby', orderbystr)]);
+  }
+}
+
 
 const GetProducts = async (req, res, next) => {
   logger.log('info', 'Request  get products controller');
   try {
-    const query = req.params.q;
-    const orderby = req.params.order || 'name';
+    const query = req.query.q || '';
+    const orderby = ParseOrderByString(req.query.sort) || 'name';
     const productos = await productService.GetProducts(query, orderby);
-    return res.json(productos);
+    res.json(productos);
   } catch (e) {
     next(e);
   }
