@@ -47,6 +47,7 @@ module.exports = {
   dbContext: {
     Users,
     Products,
+    ProductsImages,
   },
   processDatabaseData,
   awaitHelper: to,

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    Nombre: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -29,9 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(19, 4),
       allowNull: false,
       validate: {
-        len: {
-          args: 1,
-          msg: 'The password is required.',
+        isDecimal: {
+          msg: 'Price is not a valid decimal number',
+        },
+        min: {
+          args: [1],
+          msg: 'Price must be greater than or equal to 1',
         },
       },
     },
@@ -39,11 +42,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        len: {
-          args: 1,
-          msg: 'The email is required.',
+        isInt: {
+          msg: 'the stock number must be a valid integer',
         },
-        isEmail: { msg: 'Invalid email address.' },
+        min: {
+          args: [0],
+          msg: 'Price must be greater than  or equal to 0',
+        },
+      },
+    },
+    Likes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        isInt: {
+          msg: 'the number must be a valid integer',
+        },
       },
     },
   }, {

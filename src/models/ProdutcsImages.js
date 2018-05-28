@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
           args: 1,
           msg: 'The image url is required',
         },
-        isUrl: { msg: 'The imageurl is not valid' },
+        isUrl: { msg: 'The imageurl is not a valid Url' },
       },
     },
   });

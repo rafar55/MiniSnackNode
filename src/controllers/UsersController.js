@@ -1,7 +1,7 @@
 const userService = require('../Services/UserService');
 const logger = require('../logger');
 
-const GetUserList = async (req, res,next) => {
+const GetUserList = async (req, res, next) => {
   try {
     const data = await userService.getUsers();
     res.json(data);

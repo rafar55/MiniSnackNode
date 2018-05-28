@@ -7,6 +7,7 @@ const Sequelize = require('sequelize');
 const compression = require('compression');
 
 const userRoutes = require('./routes/userRoutes');
+const productsRoutes = require('./routes/productsRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(morgan('combined'));
 
 // /routes configurations
 app.use('/users', userRoutes);
+app.use('/products', productsRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
