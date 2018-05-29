@@ -72,6 +72,15 @@ const UpdateProductStock = async (req, res, next) => {
   }
 };
 
+const DeleteProduct = async (req, res, next) => {
+  try {
+    await productService.DeleteProduct(req.params.id);
+    res.status(204).send(null);
+  } catch (e) {
+    next(e);
+  }
+};
+
 
 module.exports = {
   GetProducts,
@@ -79,4 +88,5 @@ module.exports = {
   AddNewProduct,
   UpdateProductPrice,
   UpdateProductStock,
+  DeleteProduct,
 };

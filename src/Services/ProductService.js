@@ -19,6 +19,17 @@ const GetProducts = (query = '', orderbystr = 'name asc') => {
   });
 };
 
+const DeleteProduct = async (productId) => {
+  const product = await db.dbContext.Products.find({
+    where: {
+      id: productId,
+    },
+  });
+  if (!product) throw new db.NotFoundEntityError('product', productId);
+
+  return product.destroy();
+};
+
 
 const GetProductById = idProducto => db.dbContext.Products.findOne({
   where: {
@@ -38,13 +49,13 @@ const AddProduct = async (data) => {
 };
 
 
-const UpdatePriceForProduct = async (idProducto, newData) => {
+const UpdatePriceForProduct = async (productId, newData) => {
   const product = await db.dbContext.Products.find({
     where: {
-      id: idProducto,
+      id: productId,
     },
   });
-  if (!product) throw new db.NotFoundEntityError('product', idProducto);
+  if (!product) throw new db.NotFoundEntityError('product', productId);
   const previousPrice = product.Price;
 
   // Creo una transaccion en la base par hacer el update y agregar al historico
@@ -61,13 +72,13 @@ const UpdatePriceForProduct = async (idProducto, newData) => {
   return recienInsertado;
 };
 
-const UpdateStockForProduct = async (idProducto, stock) => {
+const UpdateStockForProduct = async (productId, stock) => {
   const product = await db.dbContext.Products.find({
     where: {
-      id: idProducto,
+      id: productId,
     },
   });
-  if (!product) throw new db.NotFoundEntityError('product', idProducto);
+  if (!product) throw new db.NotFoundEntityError('product', productId);
 
   await product.update({ Stock: stock });
 
@@ -80,4 +91,5 @@ module.exports = {
   AddProduct,
   UpdatePriceForProduct,
   UpdateStockForProduct,
+  DeleteProduct,
 };

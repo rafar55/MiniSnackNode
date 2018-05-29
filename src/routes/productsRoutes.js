@@ -15,6 +15,10 @@ router.route('/:id')
   .get((req, res, next) => {
     logger.log('/get product by id');
     productsController.GetProductsByID(req, res, next);
+  })
+  .delete((req, res, next) => {
+    logger.info('Delete request for product');
+    productsController.DeleteProduct(req, res, next);
   });
 
 router.route('/:id/price')
