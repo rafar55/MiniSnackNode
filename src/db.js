@@ -4,6 +4,7 @@ const logger = require('./logger');
 const UserModel = require('./models/Users');
 const ProductModel = require('./models/Products');
 const ProductImagesModel = require('./models/ProdutcsImages');
+const RolModel = require('./models/Roles');
 const ProductPriceHistoryModel = require('./models/ProductPriceHistory');
 
 const sequelize = new Sequelize(config.MySQL.database, config.MySQL.user, config.MySQL.password, {
@@ -21,10 +22,14 @@ const Users = sequelize.import('Users', UserModel);
 const Products = sequelize.import('Products', ProductModel);
 const ProductsImages = sequelize.import('ProductsImages', ProductImagesModel);
 const ProductPriceHistory = sequelize.import('ProductsPriceHistory', ProductPriceHistoryModel);
+const Roles = sequelize.import('Roles', RolModel);
 
 // Mapppings Relations Asociations
 Products.hasMany(ProductsImages, { as: 'Images', onDelete: 'CASCADE' });
 Products.hasMany(ProductPriceHistory, { as: 'PriceHistory', onDelete: 'CASCADE' });
+
+Users.belongsToMany(Roles, { through: 'UsersRoles' });
+Roles.belongsToMany(Users, { through: 'UsersRoles' });
 
 // sequelize syncronization
 sequelize.sync({ force: true })
@@ -60,6 +65,7 @@ module.exports = {
     Products,
     ProductsImages,
     ProductPriceHistory,
+    Roles,
   },
   processDatabaseData,
   awaitHelper: to,

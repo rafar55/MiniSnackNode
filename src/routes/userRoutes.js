@@ -18,4 +18,9 @@ router.route('/:id')
     userController.GetUserById(req, res, next);
   });
 
+router.route('/:id/Roles')
+  .put((req, res, next) => {
+    userController.AddRolToUser(req, res, next);
+  });
+
 module.exports = router;

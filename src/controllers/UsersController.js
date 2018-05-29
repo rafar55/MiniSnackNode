@@ -31,9 +31,22 @@ const AddUsuario = async (req, res, next) => {
   }
 };
 
+const AddRolToUser = async (req, res, next) => {
+  const UserId = req.params.id;
+  const { RolName } = req.body;
+
+  try {
+    const usuario = await userService.AddRolToUser(UserId, RolName);
+    res.status(200).json(usuario);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   GetUserList,
   GetUserById,
   AddUsuario,
+  AddRolToUser,
 };
 
