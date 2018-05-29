@@ -81,6 +81,15 @@ const DeleteProduct = async (req, res, next) => {
   }
 };
 
+const LikeProduct = async (req, res, next) => {
+  try {
+    const productoActualizado = await productService.AddLikeToProduct(req.params.id);
+    res.status(200).json(productoActualizado);
+  } catch (e) {
+    next(e);
+  }
+};
+
 
 module.exports = {
   GetProducts,
@@ -89,4 +98,5 @@ module.exports = {
   UpdateProductPrice,
   UpdateProductStock,
   DeleteProduct,
+  LikeProduct,
 };

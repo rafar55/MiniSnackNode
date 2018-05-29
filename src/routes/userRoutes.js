@@ -15,9 +15,7 @@ router.route('/')
 router.route('/:id')
   .get((req, res, next) => {
     logger.log('/get user by id');
-    userController.GetUserById(req, res);
+    userController.GetUserById(req, res, next);
   });
-
-
 
 module.exports = router;

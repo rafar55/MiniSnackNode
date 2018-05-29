@@ -31,4 +31,9 @@ router.route('/:id/stock')
     productsController.UpdateProductStock(req, res, next);
   });
 
+router.route('/:id/like')
+  .put((req, res, next) => {
+    productsController.LikeProduct(req, res, next);
+  });
+
 module.exports = router;

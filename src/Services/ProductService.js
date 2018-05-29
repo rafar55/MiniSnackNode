@@ -85,6 +85,21 @@ const UpdateStockForProduct = async (productId, stock) => {
   return product;
 };
 
+const AddLikeToProduct = async (productId) => {
+  const product = await db.dbContext.Products.find({
+    where: {
+      id: productId,
+    },
+  });
+  if (!product) throw new db.NotFoundEntityError('product', productId);
+
+  const likes = product.Likes + 1;
+
+  await product.update({ Likes: likes });
+
+  return product;
+};
+
 module.exports = {
   GetProducts,
   GetProductById,
@@ -92,4 +107,5 @@ module.exports = {
   UpdatePriceForProduct,
   UpdateStockForProduct,
   DeleteProduct,
+  AddLikeToProduct,
 };
