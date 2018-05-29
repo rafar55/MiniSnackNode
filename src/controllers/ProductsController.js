@@ -48,7 +48,25 @@ const GetProductsByID = async (req, res, next) => {
 const AddNewProduct = async (req, res, next) => {
   try {
     const data = await productService.AddProduct(req.body);
-    res.json(data);
+    res.status(201).json(data);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const UpdateProductPrice = async (req, res, next) => {
+  try {
+    const productoMod = await productService.UpdatePriceForProduct(req.params.id, req.body);
+    res.status(200).json(productoMod);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const UpdateProductStock = async (req, res, next) => {
+  try {
+    const productoMod = await productService.UpdateStockForProduct(req.params.id, req.body.Stock);
+    res.status(200).json(productoMod);
   } catch (e) {
     next(e);
   }
@@ -59,4 +77,6 @@ module.exports = {
   GetProducts,
   GetProductsByID,
   AddNewProduct,
+  UpdateProductPrice,
+  UpdateProductStock,
 };

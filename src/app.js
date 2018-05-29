@@ -8,6 +8,7 @@ const compression = require('compression');
 
 const userRoutes = require('./routes/userRoutes');
 const productsRoutes = require('./routes/productsRoutes');
+const db = require('./db');
 
 const app = express();
 
@@ -35,8 +36,12 @@ app.use((err, req, res, next) => {
     let errors = err.errors.map(x => ({ message: x.message, property: x.path }));
     errors = errors || 'bad request';
     res.status(400).send(errors);
+  } else if (err instanceof db.NotFoundEntityError) {
+    res.status(404).send(err.message);
+  } else if (err instanceof SyntaxError) {
+    res.status(err.statusCode).send(err.message);
   } else {
-    logger.log('error', e);
+    logger.log('error', err);
     res.status(500).send('Internal Server Error');
   }
 });

@@ -1,7 +1,7 @@
 
 
 module.exports = (sequelize, DataTypes) => {
-  const ProductImages = sequelize.define('ProdutcsImages', {
+  const ProductImages = sequelize.define('ProductsImages', {
     ImageURL: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -18,4 +18,6 @@ router.route('/:id')
     userController.GetUserById(req, res);
   });
 
+
+
 module.exports = router;

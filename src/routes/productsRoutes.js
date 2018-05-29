@@ -17,4 +17,14 @@ router.route('/:id')
     productsController.GetProductsByID(req, res, next);
   });
 
+router.route('/:id/price')
+  .put((req, res, next) => {
+    productsController.UpdateProductPrice(req, res, next);
+  });
+
+router.route('/:id/stock')
+  .put((req, res, next) => {
+    productsController.UpdateProductStock(req, res, next);
+  });
+
 module.exports = router;
