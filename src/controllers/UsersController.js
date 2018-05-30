@@ -24,7 +24,7 @@ const GetUserById = async (req, res, next) => {
 const AddUsuario = async (req, res, next) => {
   try {
     console.log(req.body);
-    const usuario = await userService.addUsuario(req.body);
+    const usuario = await userService.addUsuario(req.body);    
     res.status(201).json(usuario);
   } catch (e) {
     next(e);

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: {
           args: 1,
-          msg: 'The rol is require and must be at  least 3 characters',
+          msg: 'The Name is require and must be at  least 3 characters',
         },
       },
       set(val) {

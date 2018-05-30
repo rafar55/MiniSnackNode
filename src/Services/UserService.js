@@ -4,7 +4,14 @@ const userService = {};
 
 
 userService.getUsers = function GetUsuariosFromBase() {
-  return db.dbContext.Users.findAll();
+  return db.dbContext.Users.findAll({
+    include: [
+      {
+        model: db.dbContext.Roles,
+        as: 'Roles',
+        through: { attributes: [] },
+      }],
+  });
   // return new Promise((resolve, reject) => {
   //   db.connection.query('Select * FROM Users ORDER BY ID DESC', (error, rows) => {
   //     db.processDatabaseData(reject, resolve, error, rows);
@@ -17,6 +24,12 @@ userService.getUserById = function GetUsuarioById(idUsuario) {
     where: {
       id: idUsuario,
     },
+    include: [
+      {
+        model: db.dbContext.Roles,
+        as: 'Roles',
+        through: { attributes: [] },
+      }],
   });
   // return new Promise((resolve, reject) => {
   //   db.connection.query('Select * from Users WHERE id=?', [idUsuario], (error, rows) => {
@@ -28,35 +41,28 @@ userService.getUserById = function GetUsuarioById(idUsuario) {
 
 userService.addUsuario = async function addUsuarioToSql(data) {
   const newUserData = data;
+  let roles;
   if (data.Roles) {
     const RolNames = data.Roles;
-    const roles = await db.dbContext.Roles.findAll({
+    roles = await db.dbContext.Roles.findAll({
       where: {
         Name: RolNames,
       },
     });
-
-
     if (RolNames.length !== roles.length) {
       throw new db.sequelize.ValidationError('Some roles in the payload don\'t exists', [
         new db.sequelize.ValidationErrorItem('Some Roles  are invalid', 'string', 'Roles', data.Roles),
       ]);
     }
-
-    newUserData.Roles = data;
   }
-  return db.dbContext.Users.create(newUserData, {
-    include: [{
-      model: db.dbContext.Roles,
-      as: 'Roles',
-    }],
-  });
+  let newUser = await db.dbContext.Users.create(newUserData);
+  if (roles) await newUser.setRoles(roles);
+  newUser = await this.getUserById(newUser.id);
+  return newUser;
 };
 
 userService.AddRolToUser = async function AddRolToUsuarioSql(UserId, RolName) {
-  const user = await db.dbContext.Users.find({
-    where: { id: UserId },
-  });
+  const user = await this.getUserById(UserId);
 
   if (!user) {
     throw new db.sequelize.ValidationError('UserID is not valid. It doesn\'t exists', [
@@ -74,9 +80,15 @@ userService.AddRolToUser = async function AddRolToUsuarioSql(UserId, RolName) {
     ]);
   }
 
-  user.addRol(rol);
+  if (user.Roles.findIndex(x => x.Name === rol.Name) !== -1) {
+    throw new db.sequelize.ValidationError(`The user is already in this rol ${RolName}`, [
+      new db.sequelize.ValidationErrorItem(`The user is already in this rol ${RolName}`, 'string', 'RoleName', RolName),
+    ]);
+  }
 
-  return user;
+  await user.addRoles(rol);
+
+  return this.getUserById(user.id);
 };
 
 module.exports = userService;

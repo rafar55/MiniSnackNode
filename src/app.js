@@ -8,6 +8,7 @@ const compression = require('compression');
 
 const userRoutes = require('./routes/userRoutes');
 const productsRoutes = require('./routes/productsRoutes');
+const rolRoutes = require('./routes/rolesRoutes');
 const db = require('./db');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(morgan('combined'));
 // /routes configurations
 app.use('/users', userRoutes);
 app.use('/products', productsRoutes);
+app.use('/roles', rolRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
