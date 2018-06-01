@@ -25,10 +25,15 @@ function ParseOrderByString(orderbystr) {
 const GetProducts = async (req, res, next) => {
   logger.log('info', 'Request  get products controller');
   try {
+    const perpage = parseInt(req.query.per_page, 10) || 100;
+    const page = parseInt(req.query.page, 10) || 1;
     const query = req.query.q || '';
     const orderby = ParseOrderByString(req.query.sort) || 'name';
-    const productos = await productService.GetProducts(query, orderby);
-    res.json(productos);
+
+    const paginatedResult =
+     await productService.GetProductsPaginated(query, orderby, perpage, page);
+
+    res.json({ Total: paginatedResult.Total, Data: paginatedResult.Data });
   } catch (e) {
     next(e);
   }

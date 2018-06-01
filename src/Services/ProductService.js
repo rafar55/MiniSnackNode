@@ -19,6 +19,37 @@ const GetProducts = (query = '', orderbystr = 'name asc') => {
   });
 };
 
+
+const GetProductsPaginated = async (query = '', orderbystr = 'name asc', perpage = 100, page = 1) => {
+  const orderByArr = orderbystr.split(' ');
+  const wherequery = {
+    Name: {
+      [Op.like]: `%${query}%`,
+    },
+  };
+
+  const count = await db.dbContext.Products.count({
+    where: wherequery,
+  });
+
+  const calculatedoffset = perpage * (page - 1);
+
+  const lista = await db.dbContext.Products.findAll({
+    where: wherequery,
+    offset: calculatedoffset,
+    order: [
+      orderByArr,
+    ],
+    limit: perpage,
+    include: [{ model: db.dbContext.ProductsImages, as: 'Images' }],
+  });
+
+  return {
+    Total: count,
+    Data: lista,
+  };
+};
+
 const DeleteProduct = async (productId) => {
   const product = await db.dbContext.Products.find({
     where: {
@@ -102,6 +133,7 @@ const AddLikeToProduct = async (productId) => {
 
 module.exports = {
   GetProducts,
+  GetProductsPaginated,
   GetProductById,
   AddProduct,
   UpdatePriceForProduct,
