@@ -6,10 +6,13 @@ const logger = require('./logger');
 const Sequelize = require('sequelize');
 const compression = require('compression');
 
+
 const userRoutes = require('./routes/userRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const rolRoutes = require('./routes/rolesRoutes');
+const authRoutes = require('./routes/authRoutes');
 const db = require('./db');
+const authconfig = require('./config/authconfig');
 
 const app = express();
 
@@ -23,10 +26,11 @@ app.use(express.static(path.join(process.cwd(), 'pubic')));
 app.use(bodyParser.json());
 app.use(morgan('combined'));
 
-
-// Global Error Handler Middleware
+// Configure authentication middleware
+app.use(authconfig.passport.initialize());
 
 // /routes configurations
+app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/products', productsRoutes);
 app.use('/roles', rolRoutes);

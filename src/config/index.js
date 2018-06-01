@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'production') {
       password: process.env.dbPassword,
       database: process.env.dbName,
     },
+    JwtSecret: 'COH2',
   };
 } else {
   module.exports = devConfig;

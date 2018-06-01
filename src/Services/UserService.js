@@ -39,6 +39,23 @@ userService.getUserById = function GetUsuarioById(idUsuario) {
   // });
 };
 
+
+userService.GetUserByUsernameAndPassword = (username, password) => {
+  return db.dbContext.Users.find({
+    where: {
+      username,
+      password,
+    },
+    include: [
+      {
+        model: db.dbContext.Roles,
+        as: 'Roles',
+        through: { attributes: [] },
+      }],
+  });
+};
+
+
 userService.addUsuario = async function addUsuarioToSql(data) {
   const newUserData = data;
   let roles;

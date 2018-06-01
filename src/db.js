@@ -32,7 +32,7 @@ Users.belongsToMany(Roles, { through: 'UsersRoles' });
 Roles.belongsToMany(Users, { through: 'UsersRoles' });
 
 // sequelize syncronization
-sequelize.sync({ force: true })
+sequelize.sync()
   .then(() => logger.log('info', 'base de datos creada con existo'))
   .catch(err => logger.log('error', `Error al sync la base ${err}`));
 
