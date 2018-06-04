@@ -11,6 +11,7 @@ const userRoutes = require('./routes/userRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const rolRoutes = require('./routes/rolesRoutes');
 const authRoutes = require('./routes/authRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const db = require('./db');
 const authconfig = require('./config/authconfig');
 
@@ -34,6 +35,7 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/products', productsRoutes);
 app.use('/roles', rolRoutes);
+app.use('/orders', orderRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

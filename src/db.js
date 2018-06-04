@@ -6,6 +6,7 @@ const ProductModel = require('./models/Products');
 const ProductImagesModel = require('./models/ProdutcsImages');
 const RolModel = require('./models/Roles');
 const ProductPriceHistoryModel = require('./models/ProductPriceHistory');
+const OrdersModel = require('./models/Orders');
 
 const sequelize = new Sequelize(config.MySQL.database, config.MySQL.user, config.MySQL.password, {
   host: config.MySQL.host,
@@ -23,6 +24,7 @@ const Products = sequelize.import('Products', ProductModel);
 const ProductsImages = sequelize.import('ProductsImages', ProductImagesModel);
 const ProductPriceHistory = sequelize.import('ProductsPriceHistory', ProductPriceHistoryModel);
 const Roles = sequelize.import('Roles', RolModel);
+const Orders = sequelize.import('Orders', OrdersModel);
 
 // Mapppings Relations Asociations
 Products.hasMany(ProductsImages, { as: 'Images', onDelete: 'CASCADE' });
@@ -31,8 +33,12 @@ Products.hasMany(ProductPriceHistory, { as: 'PriceHistory', onDelete: 'CASCADE' 
 Users.belongsToMany(Roles, { through: 'UsersRoles' });
 Roles.belongsToMany(Users, { through: 'UsersRoles' });
 
+// Orders Mapping to User and Products
+Orders.belongsTo(Users, { as: 'User' });
+Orders.belongsTo(Products, { as: 'Product' });
+
 // sequelize syncronization
-sequelize.sync()
+sequelize.sync({ force: true })
   .then(() => logger.log('info', 'base de datos creada con existo'))
   .catch(err => logger.log('error', `Error al sync la base ${err}`));
 
@@ -66,6 +72,7 @@ module.exports = {
     ProductsImages,
     ProductPriceHistory,
     Roles,
+    Orders,
   },
   processDatabaseData,
   awaitHelper: to,
