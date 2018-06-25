@@ -18,7 +18,7 @@ REST API to manage a small snacks store using NodeJS.
 sequalize.
 1. After the app is  running, you need to execute the seed Sql located at **db/MySqlSeed.sql** on the database that was recently created.
 
-Your  are all set yo test the Rest Api.
+Your  are all set to test the Rest Api.
 
 # Frameworks
 * ExpressJs [ExpressJs Documentation](https://expressjs.com/)
